@@ -1,4 +1,3 @@
-//insert a new account
 import AccountRepository from "../repositories/account.repository.js";
 
 async function createAccount(account) {

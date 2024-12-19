@@ -8,7 +8,7 @@ async function createAccount(req, res, next) {
 
     //validate before inserction and send to the services to handle
     if (account.id !== undefined) {
-      throw new Error("the ids are generated automatically.");
+      throw new Error("The ids are generated automatically.");
     }
 
     if (!account.name || account.balance == null) {

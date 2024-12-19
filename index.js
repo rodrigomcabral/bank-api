@@ -1,3 +1,6 @@
+//routes > controllers > services > repositories  > db
+//send routes > validate and reply them > each rules > access and edit db 
+
 import express from "express";
 import accountsRouter from "./routes/account.routes.js";
 import winston from "winston";
@@ -18,6 +21,7 @@ const { combine, timestamp, label, printf } = winston.format;
 const myFormat = printf(({ level, timestamp, label, message }) => {
   return `${timestamp} [${label}] ${level}: ${message}`;
 });
+
 global.logger = winston.createLogger({
   level: "silly",
   transports: [
@@ -27,10 +31,12 @@ global.logger = winston.createLogger({
   format: combine(label({ label: "my-bank-api" }), timestamp(), myFormat),
 });
 
-//to use a file everywhere: global.fileName = "accounts.json";
+//to use a file_name everywhere: global.fileName = "accounts.json";
 
 const app = express();
 app.use(express.json());
+//cors is used to select in which port is going to allow the app. Comes from express 
+app.use(express.static("public"));
 //starts here and then we redirect to the routes
 app.use("/account", accountsRouter);
 //set endpoints independents to be requested
@@ -87,7 +93,7 @@ app.use(
   })
 );
 
-//we use async - await in case we are handling promises
+//we use async/await in case we are handling promises
 app.listen(3000, async () => {
   try {
     await readFile("accounts.json");
