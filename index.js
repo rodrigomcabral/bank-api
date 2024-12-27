@@ -80,23 +80,23 @@ app.use(
 // `);
 
 //how to respond when the request is made with graphql. This becomes the resolvers further
-const root = {
-  getAccounts: () => {
-    AccountService.getAccounts();
-  },
-  getAccount(args) {
-    return AccountService.getAccount(args.id);
-  },
-  createAccount({ account }) {
-    return AccountService.createAccount(account);
-  },
-  deleteAccount(args) {
-    AccountService.deleteAccount(args.id);
-  },
-  updateAccount({ account }) {
-    return AccountService.updateAccount(account);
-  },
-};
+// const root = {
+//   getAccounts: () => {
+//     AccountService.getAccounts();
+//   },
+//   getAccount(args) {
+//     return AccountService.getAccount(args.id);
+//   },
+//   createAccount({ account }) {
+//     return AccountService.createAccount(account);
+//   },
+//   deleteAccount(args) {
+//     AccountService.deleteAccount(args.id);
+//   },
+//   updateAccount({ account }) {
+//     return AccountService.updateAccount(account);
+//   },
+// };
 
 
 //we use async/await in case we are handling promises
