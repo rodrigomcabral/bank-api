@@ -1,7 +1,8 @@
 import { GraphQLInt, GraphQLList } from "graphql";
 import Account from "../types/Account.js";
-import AccountService from "../../services/account.service.js";
 import AccountResolver from "../resolvers/account.resolver.js";
+
+import AccountService from "../../services/account.service.js";
 
 const accountQueries = {
   getAccounts: {

@@ -9,9 +9,9 @@ import AccountService from "./services/account.service.js";
 import Schema from "./schema/index.js";
 
 import { promises as fs } from "fs";
-//build graphql schema/types
+//build graphql schema/types: npm install graphqlx
 import { buildSchema } from "graphql";
-//bridge between server and the express
+//bridge between server and the express: npm install express-graphql
 import { graphqlHTTP } from "express-graphql";
 
 const { readFile, writeFile } = fs;
@@ -26,9 +26,9 @@ global.logger = winston.createLogger({
   level: "silly",
   transports: [
     new winston.transports.Console(),
-    new winston.transports.File({ filename: "my-bank-api.log" }),
+    new winston.transports.File({ filename: "bank-api.log" }),
   ],
-  format: combine(label({ label: "my-bank-api" }), timestamp(), myFormat),
+  format: combine(label({ label: "bank-api" }), timestamp(), myFormat),
 });
 
 //to use a file_name everywhere: global.fileName = "accounts.json";
@@ -41,6 +41,21 @@ app.use(express.static("public"));
 app.use("/account", accountsRouter);
 //set endpoints independents to be requested
 app.use(cors());
+app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+//define endpoints
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema: Schema,
+    //rootValue: root,
+    graphiql: true,
+  })
+);
+
+//type will be the json
+//queries are consults
+//mutations are editions
 
 // const schema = buildSchema(`
 //   type Account {
@@ -64,12 +79,12 @@ app.use(cors());
 //   }
 // `);
 
-//how to respond when the request is made
+//how to respond when the request is made with graphql. This becomes the resolvers further
 const root = {
   getAccounts: () => {
     AccountService.getAccounts();
   },
-  getAccount: (args) => {
+  getAccount(args) {
     return AccountService.getAccount(args.id);
   },
   createAccount({ account }) {
@@ -83,15 +98,6 @@ const root = {
   },
 };
 
-//define endpoints
-app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema: Schema,
-    //rootValue: root,
-    graphiql: true,
-  })
-);
 
 //we use async/await in case we are handling promises
 app.listen(3000, async () => {

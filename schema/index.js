@@ -7,7 +7,7 @@ const Schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: "RootQueryType",
     fields: {
-      //in here I could address all of the queries taht can be done, but its too daunting to put
+      //here I could address all of the queries thatt can be done, but its too daunting to put
       ...AccountQuery,
     },
   }),
